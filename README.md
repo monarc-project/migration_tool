@@ -1,10 +1,10 @@
-#Monarc Migration Tool
+# Monarc Migration Tool
 
 Outils de migrations des données de l'ancienne version à la nouvelle version de Smile/Monarc.
 
-##Installation
+## Installation
 
-	git clone ssh://gogs@rhea.netlor.fr:2222/monarc/migration_tools.git ./module/MonarcMigrationTool
+	git clone https://github.com/monarc-project/migration_tool.git ./module/MonarcMigrationTool
 
 ou
 
@@ -13,7 +13,7 @@ ou
 Éditer config/application.config.php et ajouter 'MonarcMigrationTool' à modules.
 
 
-##Exécution
+## Exécution
 
 	php ./public/index.php to see all options
 
@@ -31,12 +31,12 @@ ou
 	php public/index.php monarc:migrate --mode=client/backoffice --dbname=<dbname> --password=<password> --host=<host> --user=<user> --dbnamec=<dbname common --passwordc=<password common> --hostc=<host common> --userc=<user common>
 
 
-##Erreurs
+## Erreurs
 
 * Erreur d'écriture du cache Doctrine:
 	
 	chmod -R 777 ./data/DoctrineORMModule
 
-##Conseils
+## Conseils
 
 * Utiliser php >= 7: en php 5.6 l'import des liens AMVs (+1900 éléments) est très long
