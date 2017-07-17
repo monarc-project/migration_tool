@@ -19,7 +19,7 @@
     "repositories":[
         {
             "type": "composer",
-            "url": "https://rhea.netlor.fr/monarc/zm_core/raw/master/packages.json"
+            "url": "https://github.com/monarc-project/zm-core/blob/master/packages.json"
         }
     ]
 }
