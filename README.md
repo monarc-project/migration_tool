@@ -54,3 +54,4 @@ Writing error in Doctrine cache :
 ## Tips
 
 * Use php >= 7
+* By default the question of the evaluation of trends are migrated as questions added by user. If you want to make as "system question" set the mode at 0 in the new client table "questions" for each line. 
