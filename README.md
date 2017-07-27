@@ -27,26 +27,27 @@ Migration's tool for the old monarc customers to the current version
 
 ## Erreurs
 
-* Some Client's DB can have issue of integrity preventing the completness of the migration. The following request correct the bug. It must be done before the migration on the client's DB
+Some Client's DB can have issue of integrity preventing the completness of the migration. The following request correct the bug. It must be done before the migration on the client's DB
 
-update dims_mod_smile_anr_recommandations_risks
+	update dims_mod_smile_anr_recommandations_risks
 
-set dims_mod_smile_anr_recommandations_risks.a_id = (SELECT dims_mod_smile_anr_qualif.id_asset
-from dims_mod_smile_anr_qualif 
-where dims_mod_smile_anr_recommandations_risks.risk_id = dims_mod_smile_anr_qualif.id),
+	set dims_mod_smile_anr_recommandations_risks.a_id = (SELECT dims_mod_smile_anr_qualif.id_asset
+	from dims_mod_smile_anr_qualif 
+	where dims_mod_smile_anr_recommandations_risks.risk_id = dims_mod_smile_anr_qualif.id),
 
-dims_mod_smile_anr_recommandations_risks.v_id = (SELECT dims_mod_smile_anr_qualif.id_vul
-from dims_mod_smile_anr_qualif
-where dims_mod_smile_anr_recommandations_risks.risk_id = dims_mod_smile_anr_qualif.id),
+	dims_mod_smile_anr_recommandations_risks.v_id = (SELECT dims_mod_smile_anr_qualif.id_vul
+	from dims_mod_smile_anr_qualif
+	where dims_mod_smile_anr_recommandations_risks.risk_id = dims_mod_smile_anr_qualif.id),
 
-dims_mod_smile_anr_recommandations_risks.m_id = (SELECT dims_mod_smile_anr_qualif.id_menace
-from dims_mod_smile_anr_qualif 
-where dims_mod_smile_anr_recommandations_risks.risk_id = dims_mod_smile_anr_qualif.id),
+	dims_mod_smile_anr_recommandations_risks.m_id = (SELECT dims_mod_smile_anr_qualif.id_menace
+	from dims_mod_smile_anr_qualif 
+	where dims_mod_smile_anr_recommandations_risks.risk_id = dims_mod_smile_anr_qualif.id),
 
-where dims_mod_smile_anr_recommandations_risks.a_id = 0 and dims_mod_smile_anr_recommandations_risks.v_id = 0 and dims_mod_smile_anr_recommandations_risks.m_id = 0 
-and dims_mod_smile_anr_recommandations_risks.biblio_global_id = 0 ; 
+	where dims_mod_smile_anr_recommandations_risks.a_id = 0 and dims_mod_smile_anr_recommandations_risks.v_id = 0 and 		dims_mod_smile_anr_recommandations_risks.m_id = 0 
+	and dims_mod_smile_anr_recommandations_risks.biblio_global_id = 0 ; 
+	
 
-* Writing error in Doctrine cache :
+Writing error in Doctrine cache :
 	
 	chmod -R 777 ./data/DoctrineORMModule
 
