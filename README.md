@@ -1,19 +1,13 @@
 # Monarc Migration Tool
 
-Outils de migrations des données de l'ancienne version à la nouvelle version de Smile/Monarc.
+Migration's tool for the old monarc customers to the current version
 
 ## Installation
 
 	git clone https://github.com/monarc-project/migration_tool.git ./module/MonarcMigrationTool
 
-ou
 
-	via composer
-
-Éditer config/application.config.php et ajouter 'MonarcMigrationTool' à modules.
-
-
-## Exécution
+## Execution
 
 	php ./public/index.php to see all options
 
@@ -33,10 +27,29 @@ ou
 
 ## Erreurs
 
-* Erreur d'écriture du cache Doctrine:
+* Some Client's DB can have issue of integrity preventing the completness of the migration. The following request correct the bug. It must be done before the migration on the client's DB
+
+update dims_mod_smile_anr_recommandations_risks
+
+set dims_mod_smile_anr_recommandations_risks.a_id = (SELECT dims_mod_smile_anr_qualif.id_asset
+from dims_mod_smile_anr_qualif 
+where dims_mod_smile_anr_recommandations_risks.risk_id = dims_mod_smile_anr_qualif.id),
+
+dims_mod_smile_anr_recommandations_risks.v_id = (SELECT dims_mod_smile_anr_qualif.id_vul
+from dims_mod_smile_anr_qualif
+where dims_mod_smile_anr_recommandations_risks.risk_id = dims_mod_smile_anr_qualif.id),
+
+dims_mod_smile_anr_recommandations_risks.m_id = (SELECT dims_mod_smile_anr_qualif.id_menace
+from dims_mod_smile_anr_qualif 
+where dims_mod_smile_anr_recommandations_risks.risk_id = dims_mod_smile_anr_qualif.id),
+
+where dims_mod_smile_anr_recommandations_risks.a_id = 0 and dims_mod_smile_anr_recommandations_risks.v_id = 0 and dims_mod_smile_anr_recommandations_risks.m_id = 0 
+and dims_mod_smile_anr_recommandations_risks.biblio_global_id = 0 ; 
+
+* Writing error in Doctrine cache :
 	
 	chmod -R 777 ./data/DoctrineORMModule
 
-## Conseils
+## Tips
 
-* Utiliser php >= 7: en php 5.6 l'import des liens AMVs (+1900 éléments) est très long
+* Use php >= 7
