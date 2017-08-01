@@ -2,12 +2,13 @@
 namespace MonarcMigrationTool\Service\Import\Client;
 
 use Zend\Console\ColorInterface;
+use \DateTime;
 
 class AnrsService extends \MonarcMigrationTool\Service\Import\AbstractService{
 
     public function import(&$corresp = []){
         $res = $this->adapter->query("
-            SELECT a.*, s.anr_reference sref, s.comment scomment, s.timestp_create as stc
+            SELECT a.*, s.anr_reference sref, s.comment scomment, s.timestp_create as stc, s.id_user
             FROM `dims_mod_smile_anr` a
             INNER JOIN `dims_project` p
             ON p.id = a.project_id
@@ -98,10 +99,16 @@ class AnrsService extends \MonarcMigrationTool\Service\Import\AbstractService{
                     'anr' => $corresp['anrs'][$r['id']],
                     'anrReference' => $corresp['anrs'][$r['sref']],
                     'comment' => $r['scomment'],
-                    'createdAt' => substr($r['stc'], 0, 4).'-'.substr($r['stc'], 4, 2).'-'.substr($r['stc'], 6, 2).' '.substr($r['stc'], 8, 2).':'.substr($r['stc'], 10, 2).':'.substr($r['stc'], 12, 2),
-                    'createdBy' => 'Migration Tool',
                 ]);
-                $anrService->setDependencies($snap,['anr', 'anrReference']);
+                $snap->createdAt = DateTime::createFromFormat('Y-m-d H:i:s',substr($r['stc'], 0, 4).'-'.substr($r['stc'], 4, 2).'-'.substr($r['stc'], 6, 2).' '.substr($r['stc'], 8, 2).':'.substr($r['stc'], 10, 2).':'.substr($r['stc'], 12, 2));
+		if(!empty($r['id_user']))
+		{
+			$resQC = $this->adapter->query("SELECT firstname, lastname FROM dims_mod_business_contact WHERE account_id=".$r['id_user']." LIMIT 1")->execute();
+			foreach($resQC as $rQC){
+				$snap->creator = $rQC['firstname'].' '.$rQC['lastname'];}
+                }else
+			$snap->creator = 'Migration tool';
+		$anrService->setDependencies($snap,['anr', 'anrReference']);
                 $snapshotTable->save($snap);
                 $this->serviceLocator->get($this->dbUsed)->getEntityManager()->detach($snap);
                 unset($snap);
