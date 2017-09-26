@@ -41,7 +41,7 @@ Some Client's DB can have issue of integrity preventing the completness of the m
 
 	dims_mod_smile_anr_recommandations_risks.m_id = (SELECT dims_mod_smile_anr_qualif.id_menace
 	from dims_mod_smile_anr_qualif 
-	where dims_mod_smile_anr_recommandations_risks.risk_id = dims_mod_smile_anr_qualif.id),
+	where dims_mod_smile_anr_recommandations_risks.risk_id = dims_mod_smile_anr_qualif.id)
 
 	where dims_mod_smile_anr_recommandations_risks.a_id = 0 and dims_mod_smile_anr_recommandations_risks.v_id = 0 and 		dims_mod_smile_anr_recommandations_risks.m_id = 0 
 	and dims_mod_smile_anr_recommandations_risks.biblio_global_id = 0 ; 
