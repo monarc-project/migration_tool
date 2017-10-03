@@ -27,7 +27,9 @@ Migration's tool for the old monarc customers to the current version
 
 ## Erreurs
 
-Some Client's DB can have issue of integrity preventing the completness of the migration. The following request correct the bug. It must be done before the migration on the client's DB
+Some Client's DB can have issue of integrity preventing the completness of the migration. The following requests correct the bug. It must be done before the migration on the client's DB
+
+Request 1 for recommandation
 
 	update dims_mod_smile_anr_recommandations_risks
 
@@ -45,6 +47,14 @@ Some Client's DB can have issue of integrity preventing the completness of the m
 
 	where dims_mod_smile_anr_recommandations_risks.a_id = 0 and dims_mod_smile_anr_recommandations_risks.v_id = 0 and 		dims_mod_smile_anr_recommandations_risks.m_id = 0 
 	and dims_mod_smile_anr_recommandations_risks.biblio_global_id = 0 ; 
+
+Request 2 for the consequences 
+	
+	insert into dims_mod_smile_assoc_consequences (instance_id, biblio_id, anr_id, type_id)
+	select dims_mod_smile_anr_instance.id, dims_mod_smile_anr_instance.biblio_id, dims_mod_smile_anr_instance.anr_id, 			dims_mod_smile_biblio_scales_impact_types.id
+	from dims_mod_smile_anr_instance, dims_mod_smile_biblio_scales_impact_types
+	where dims_mod_smile_anr_instance.id not in (select dims_mod_smile_assoc_consequences.instance_id from dims_mod_smile_assoc_consequences)
+	and dims_mod_smile_biblio_scales_impact_types.anr_id = dims_mod_smile_anr_instance.anr_id
 	
 
 Writing error in Doctrine cache :
